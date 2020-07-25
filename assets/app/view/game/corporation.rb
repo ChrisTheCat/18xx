@@ -274,11 +274,18 @@ module View
             market_tr_props[:style][:backgroundColor] = color
             market_tr_props[:style][:color] = contrast_on(color)
           end
+        end
+
+        if player_rows.any? || @corporation.num_market_shares.positive?
+          president = @corporation.owner == @game.share_pool
+          at_limit = @game.share_pool.bank_at_limit?(@corporation)
+
+          flags = (president ? '*' : '') + (at_limit ? 'L' : '')
 
           pool_rows << h('tr.market', market_tr_props, [
             h('td.name', 'Market'),
             h('td.right', shares_props,
-              (@game.share_pool.bank_at_limit?(@corporation) ? 'L ' : '') +
+              flags + ' ' +
               share_number_str(@corporation.num_market_shares)),
             h('td.right', share_price_str(@corporation.share_price)),
           ])

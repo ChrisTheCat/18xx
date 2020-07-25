@@ -37,6 +37,7 @@ module View
 
         children << h(:div, [
           h(Bank, game: @game, layout: :card),
+          *player_owned[@game.share_pool]&.map { |c| h(Corporation, corporation: c) },
           *bank_owned.map { |c| h(Corporation, corporation: c) },
         ])
 

@@ -2,11 +2,14 @@
 
 require_relative '../../token'
 require_relative '../buy_company'
+require_relative 'skip_if_presidentless'
 
 module Engine
   module Step
     module G1846
       class BuyCompany < BuyCompany
+        include SkipIfPresidentless
+
         def room?(entity)
           entity.trains.reject(&:obsolete).size < @game.phase.train_limit
         end

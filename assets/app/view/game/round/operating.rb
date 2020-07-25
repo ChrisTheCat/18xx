@@ -27,8 +27,8 @@ module View
 
           action << h(RouteSelector) if @current_actions.include?('run_routes')
           action << h(Dividend) if @current_actions.include?('dividend')
-          action << h(BuyTrains) if @current_actions.include?('buy_train')
           action << h(IssueShares) if @current_actions.include?('buy_shares')
+          action << h(BuyTrains) if @current_actions.include?('buy_train')
 
           left = action
 

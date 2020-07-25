@@ -34,7 +34,6 @@ module Engine
                   :depot, :finished, :graph, :hexes, :id, :loading, :log, :minors, :phase, :players, :operating_rounds,
                   :round, :share_pool, :stock_market, :tiles, :turn, :undo_possible, :redo_possible,
                   :round_history
-      attr_accessor :bankruptcies
 
       DEV_STAGE = :prealpha
 
@@ -257,9 +256,9 @@ module Engine
         @finished = false
         @log = []
         @actions = []
-        @bankruptcies = 0
         @names = names.freeze
         @players = @names.map { |name| Player.new(name) }
+        @bankrupt_players = []
 
         @seed = @id.to_s.scan(/\d+/).first.to_i % RAND_M
 
@@ -290,7 +289,7 @@ module Engine
 
         @depot = init_train_handler
         init_starting_cash(@players, @bank)
-        @share_pool = SharePool.new(self)
+        @share_pool = init_share_pool
         @hexes = init_hexes(@companies, @corporations)
         @graph = Graph.new(self)
 
@@ -335,11 +334,11 @@ module Engine
       end
 
       def inspect
-        "#{self.class.name} - #{self.class.title} #{@players.map(&:name)}"
+        "#{self.class.name} - #{self.class.title} #{all_players.map(&:name)}"
       end
 
       def result
-        @players
+        all_players
           .sort_by(&:value)
           .reverse
           .map { |p| [p.name, p.value] }
@@ -650,6 +649,23 @@ module Engine
         end
       end
 
+      def all_players
+        @players + @bankrupt_players
+      end
+
+      def declare_bankrupt(player)
+        if @bankrupt_players.include?(player)
+          game_error("#{player.name} is already bankrupt, cannot declare bankruptcy again.")
+        end
+
+        @bankrupt_players << player
+        @players.delete(player)
+      end
+
+      def game_error(msg)
+        raise GameError.new(msg, current_action_id)
+      end
+
       def tile_lays(_entity)
         # Some games change available lays depending on if minor or corp
         self.class::TILE_LAYS
@@ -832,6 +848,10 @@ module Engine
             ability.share = share_by_id(share)
           end
         end
+      end
+
+      def init_share_pool
+        SharePool.new(self)
       end
 
       def connect_hexes
@@ -1034,7 +1054,7 @@ module Engine
       end
 
       def bankruptcy_limit_reached?
-        @bankruptcies.positive?
+        @bankrupt_players.any?
       end
     end
   end

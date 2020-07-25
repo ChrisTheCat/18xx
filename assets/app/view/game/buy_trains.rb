@@ -41,7 +41,10 @@ module View
             children << h(:div, props, corp)
           end
 
-          children << render_bankruptcy
+          round = @game.round
+          corporation = round.current_entity
+          current_actions = round.actions_for(corporation)
+          children << render_bankruptcy unless current_actions.include?('buy_shares')
         else
           children << h('div',
                         'To buy the cheapest train the president must contribute'\

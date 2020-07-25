@@ -22,6 +22,19 @@ module Engine
           @game.stock_market.move_right(entity) if revenue >= price * 3 && price >= 165
           @game.log_share_price(entity, price)
         end
+
+        def skip!
+          super
+
+          return unless current_entity.owner == @game.share_pool
+
+          return if current_entity.trains.any?
+
+          return if current_entity.share_price.price.zero?
+
+          @log << "#{current_entity.name} has no president and does not own a train."
+          change_share_price(current_entity, 0)
+        end
       end
     end
   end

@@ -3,6 +3,7 @@
 # frozen_string_literal: true
 
 require_relative '../config/game/g_1846'
+require_relative '../g_1846/share_pool'
 require_relative 'base'
 
 module Engine
@@ -29,6 +30,7 @@ module Engine
       SELL_AFTER = :p_any_operate
       SELL_BUY_ORDER = :sell_buy
       SELL_MOVEMENT = :left_block_pres
+      EBUY_OTHER_VALUE = false
       HOME_TOKEN_TIMING = :float
       MUST_BUY_TRAIN = :always
 
@@ -67,8 +69,12 @@ module Engine
         end
       end
 
+      def init_share_pool
+        Engine::G1846::SharePool.new(self)
+      end
+
       def cert_limit
-        num_players = @players.size
+        num_players = all_players.size
         num_corps = @corporations.size
         case num_players
         when 3
@@ -232,8 +238,8 @@ module Engine
         end
       end
 
-      def close_corporation(corporation)
-        @log << "#{corporation.name} closes"
+      def close_corporation(corporation, quiet: false)
+        @log << "#{corporation.name} closes" unless quiet
 
         hexes.each do |hex|
           hex.tile.cities.each do |city|
@@ -274,23 +280,23 @@ module Engine
           Step::DiscardTrain,
           Step::Assign,
           Step::SpecialTrack,
-          Step::BuySellParShares,
+          Step::G1846::BuySellParShares,
         ])
       end
 
       def operating_round(round_num)
         Round::G1846::Operating.new(self, [
-          Step::Bankrupt,
+          Step::G1846::Bankrupt,
           Step::DiscardTrain,
           Step::Assign,
           Step::SpecialToken,
           Step::SpecialTrack,
           Step::G1846::BuyCompany,
-          Step::IssueShares,
-          Step::TrackAndToken,
+          Step::G1846::IssueShares,
+          Step::G1846::TrackAndToken,
           Step::Route,
           Step::G1846::Dividend,
-          Step::Train,
+          Step::G1846::Train,
           [Step::G1846::BuyCompany, blocks: true],
         ], round_num: round_num)
       end
@@ -330,7 +336,24 @@ module Engine
       end
 
       def bankruptcy_limit_reached?
-        @bankruptcies >= @players.size - 1
+        @bankrupt_players.size >= (all_players.size - 1)
+      end
+
+      def sellable_bundles(player, corporation)
+        return [] if corporation.owner == @share_pool
+
+        super(player, corporation)
+      end
+
+      def bundle_is_presidents_share_alone_in_pool?(bundle)
+        return unless bundle
+
+        bundle = bundle.to_bundle
+
+        bundle.owner == @share_pool &&
+          bundle.presidents_share &&
+          bundle.shares.size == 1 &&
+          @share_pool.shares_of(bundle.corporation).size == 1
       end
     end
   end

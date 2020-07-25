@@ -36,7 +36,7 @@ module View
           h(:thead, [
             h(:tr, [
               h(:th, ''),
-              h(:th, { attrs: { colspan: @game.players.size } }, 'Player Finances'),
+              h(:th, { attrs: { colspan: @game.all_players.size } }, 'Player Finances'),
             ]),
           ]),
           h(:tbody, [
@@ -94,7 +94,7 @@ module View
         [
           h(:tr, [
             h(:th, ''),
-            h(:th, { attrs: { colspan: @game.players.size } }, 'Players'),
+            h(:th, { attrs: { colspan: @game.all_players.size } }, 'Players'),
             h(:th, { attrs: { colspan: 2 } }, 'Bank'),
             h(:th, { attrs: { colspan: 2 } }, 'Prices'),
             h(:th, { attrs: { colspan: 4 } }, 'Corporation'),
@@ -104,7 +104,7 @@ module View
           ]),
           h(:tr, [
             render_sort_link('SYM', 'ID'),
-            *@game.players.map { |p| h('th.name.nowrap', p.name) },
+            *@game.all_players.map { |p| h('th.name.nowrap', p.name) },
             h(:th, @game.class::IPO_NAME),
             h(:th, 'Market'),
             h(:th, @game.class::IPO_NAME),
@@ -213,7 +213,7 @@ module View
 
         h(:tr, props, [
           h(:th, name_props, corporation.name),
-          *@game.players.map do |p|
+          *@game.all_players.map do |p|
             sold_props = { style: {} }
             if @game.round.active_step&.did_sell?(corporation, p)
               sold_props[:style][:backgroundColor] = '#9e0000'
@@ -222,7 +222,7 @@ module View
             h(:td, sold_props, p.num_shares_of(corporation).to_s + (corporation.president?(p) ? '*' : ''))
           end,
           h(:td, corporation.num_shares_of(corporation)),
-          h(:td, @game.share_pool.num_shares_of(corporation)),
+          h(:td, @game.share_pool.num_shares_of(corporation).to_s + (corporation.owner == @game.share_pool ? '*' : '')),
           h(:td, corporation.par_price ? @game.format_currency(corporation.par_price.price) : ''),
           h(:td, market_props, corporation.share_price ? @game.format_currency(corporation.share_price.price) : ''),
           h(:td, @game.format_currency(corporation.cash)),
@@ -242,28 +242,28 @@ module View
       def render_player_privates
         h(:tr, [
           h('th.no_padding', 'Privates'),
-          *@game.players.map { |p| render_companies(p) },
+          *@game.all_players.map { |p| render_companies(p) },
         ])
       end
 
       def render_player_cash
         h(:tr, [
           h(:th, 'Cash'),
-          *@game.players.map { |p| h(:td, @game.format_currency(p.cash)) },
+          *@game.all_players.map { |p| h(:td, @game.format_currency(p.cash)) },
         ])
       end
 
       def render_player_worth
         h(:tr, [
           h(:th, 'Worth'),
-          *@game.players.map { |p| h(:td, @game.format_currency(p.value)) },
+          *@game.all_players.map { |p| h(:td, @game.format_currency(p.value)) },
         ])
       end
 
       def render_player_certs
         h(:tr, [
           h(:th, 'Certs'),
-          *@game.players.map { |p| h(:td, p.num_certs) },
+          *@game.all_players.map { |p| h(:td, p.num_certs) },
         ])
       end
     end

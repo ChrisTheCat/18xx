@@ -36,7 +36,7 @@ module Engine
         # Done via Sell Shares
         num_shares = entity.num_player_shares - entity.num_market_shares
         bundles = entity.bundles_for_corporation(entity)
-        share_price = @game.stock_market.find_share_price(entity, :left).price
+        share_price = @game.stock_market.find_share_price(entity, [:left]).price
 
         bundles
           .each { |bundle| bundle.share_price = share_price }
@@ -45,7 +45,7 @@ module Engine
 
       def redeemable_shares(entity)
         # Done via Buy Shares
-        share_price = @game.stock_market.find_share_price(entity, :right).price
+        share_price = @game.stock_market.find_share_price(entity, [:right]).price
 
         @game
           .share_pool

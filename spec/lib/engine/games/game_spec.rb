@@ -20,6 +20,11 @@ module Engine
         'creslin792' => 6178,
         'markcp' => 6225,
       },
+      'hs_ynxuqvex_1595710756' => {
+        'Player 1' => 0,
+        'Player 2' => 0,
+        'Player 3' => 1527,
+      },
     },
     GAMES_BY_TITLE['18Chesapeake'] => {
       1825 => {
