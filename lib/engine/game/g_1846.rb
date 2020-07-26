@@ -352,8 +352,8 @@ module Engine
 
         bundle.owner.pool? &&
           bundle.presidents_share &&
-          bundle.shares.size == 1 &&
-          @share_pool.shares_of(bundle.corporation).size == 1
+          bundle.shares.one? &&
+          @share_pool.shares_of(bundle.corporation).one?
       end
     end
   end

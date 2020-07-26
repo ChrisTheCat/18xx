@@ -77,7 +77,7 @@ module View
 
           # If there's a choice of tokens of different types show the selector, otherwise just place
           next_tokens = step.available_tokens
-          if next_tokens.size == 1
+          if next_tokens.one?
             action = Engine::Action::PlaceToken.new(
               @selected_company || @game.current_entity,
               city: @city,
