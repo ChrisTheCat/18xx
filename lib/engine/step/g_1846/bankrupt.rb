@@ -32,7 +32,7 @@ module Engine
             corporation.owner = @game.share_pool if corporation.owner == player
           end
 
-          @game.minors.dup
+          @game.minors
             .select { |minor| minor.owner == player }
             .each { |minor| @game.close_corporation(minor, quiet: true) }
 
