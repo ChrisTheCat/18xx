@@ -14,7 +14,7 @@ module Engine
         def actions(entity)
           return [] if entity.minor? || entity.company?
 
-          return [] if entity.owner.pool?
+          return [] if entity.receivership?
 
           if entity.corporation? && must_buy_train?(entity)
             actions_ = %w[buy_train]
@@ -30,7 +30,7 @@ module Engine
         end
 
         def skip!
-          @round.attempt_to_buy_train_no_president(self, :process_buy_train)
+          @round.receivership_train_buy(self, :process_buy_train)
         end
 
         # ugly hack since the view for IssueShares keys off the buy_shares

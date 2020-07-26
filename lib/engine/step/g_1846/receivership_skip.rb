@@ -3,9 +3,9 @@
 module Engine
   module Step
     module G1846
-      module SkipIfPresidentless
+      module ReceivershipSkip
         def actions(entity)
-          entity.owner.pool? ? [] : super
+          entity.receivership? ? [] : super
         end
       end
     end

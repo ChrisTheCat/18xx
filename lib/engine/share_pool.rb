@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'corporation'
+require_relative 'entity'
 require_relative 'share_bundle'
 require_relative 'share_holder'
 
 module Engine
   class SharePool
+    include Entity
     include ShareHolder
 
     def initialize(game)
@@ -91,19 +93,7 @@ module Engine
       transfer_shares(bundle, self, spender: @bank, receiver: entity)
     end
 
-    def player?
-      false
-    end
-
-    def corporation?
-      false
-    end
-
-    def company?
-      false
-    end
-
-    def pool?
+    def share_pool?
       true
     end
 

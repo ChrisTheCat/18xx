@@ -22,10 +22,10 @@ module Engine
         end
 
         def after_process(action)
-          if (entity = @entities[@entity_index]).owner.pool?
+          if (entity = @entities[@entity_index]).receivership?
             case action
             when Engine::Action::Bankrupt
-              attempt_to_buy_train_no_president(self, :process_action) unless @game.bankruptcy_limit_reached?
+              receivership_train_buy(self, :process_action) unless @game.bankruptcy_limit_reached?
             when Engine::Action::RunRoutes
               process_action(Engine::Action::Dividend.new(entity, kind: 'withhold'))
             end
@@ -34,10 +34,10 @@ module Engine
           super
         end
 
-        def attempt_to_buy_train_no_president(obj, method)
+        def receivership_train_buy(obj, method)
           entity = @entities[@entity_index]
 
-          return unless entity.owner.pool?
+          return unless entity.receivership?
 
           return unless entity.trains.empty?
 
