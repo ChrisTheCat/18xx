@@ -12,7 +12,7 @@ module Engine
         end
 
         def actions(entity)
-          return [] if entity.minor? || entity.company?
+          return [] unless entity.player? || entity.corporation?
 
           return [] if entity.receivership?
 
