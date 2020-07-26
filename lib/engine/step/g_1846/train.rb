@@ -20,7 +20,7 @@ module Engine
             return %w[sell_shares] unless can_issue?(current_entity)
           elsif must_buy_train?(entity)
             actions_ = %w[buy_train]
-            actions_ += %w[buy_shares sell_shares] if can_issue?(entity)
+            actions_.concat(%w[buy_shares sell_shares]) if can_issue?(entity)
             return actions_
           end
 
