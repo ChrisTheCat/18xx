@@ -20,10 +20,20 @@ module Engine
         'creslin792' => 6178,
         'markcp' => 6225,
       },
+      # this game has bankruptcy sending two corps into receivership, one of
+      # them buying a train immediately; also has emergency share issuing
       'hs_ynxuqvex_1595710756' => {
         'Player 1' => 0,
         'Player 2' => 0,
         'Player 3' => 1527,
+      },
+      # this game has bankruptcy sending a corp into receivership, being unable
+      # to buy a train, and then buying a train on its next turn thanks to
+      # company income; also includes emergency share issuing
+      'hs_gcumggit_1595777670' => {
+        'Player 1' => 0,
+        'Player 2' => 1387,
+        'Player 3' => 0,
       },
     },
     GAMES_BY_TITLE['18Chesapeake'] => {
