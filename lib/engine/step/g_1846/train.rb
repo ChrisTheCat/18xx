@@ -70,7 +70,7 @@ module Engine
             raise GameError, 'President may not sell shares while corporation can issues shares.'
           end
 
-          super(action)
+          super
         end
 
         private

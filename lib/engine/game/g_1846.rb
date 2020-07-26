@@ -302,7 +302,7 @@ module Engine
       end
 
       def tile_cost(tile, entity)
-        [TILE_COST, super(tile, entity)].max
+        [TILE_COST, super].max
       end
 
       def event_close_companies!
@@ -342,7 +342,7 @@ module Engine
       def sellable_bundles(player, corporation)
         return [] if corporation.owner.pool?
 
-        super(player, corporation)
+        super
       end
 
       def bundle_is_presidents_share_alone_in_pool?(bundle)

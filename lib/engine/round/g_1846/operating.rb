@@ -31,7 +31,7 @@ module Engine
             end
           end
 
-          super(action)
+          super
         end
 
         def attempt_to_buy_train_no_president(obj, method)

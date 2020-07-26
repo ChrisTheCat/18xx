@@ -16,7 +16,7 @@ module Engine
           bundle = ShareBundle.new(bundle.shares, percent)
         end
 
-        super(entity, bundle, exchange: exchange)
+        super
       end
     end
   end

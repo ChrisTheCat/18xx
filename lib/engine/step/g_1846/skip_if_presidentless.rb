@@ -5,9 +5,7 @@ module Engine
     module G1846
       module SkipIfPresidentless
         def actions(entity)
-          return [] if entity.owner.pool?
-
-          super(entity)
+          entity.owner.pool? ? [] : super
         end
       end
     end
