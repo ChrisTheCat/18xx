@@ -41,6 +41,11 @@ module View
             children << h(:div, props, corp)
           end
 
+          # if the buy_shares action is available, that means that issuing/redeeming
+          # shares is available; if buy_shares is available during the train
+          # step, that means that emergency issuing of shares is available; in
+          # 1846, this emergency issuing must be done before the president may
+          # contribute their own cash, sell their own shares, or go bankrupt
           round = @game.round
           corporation = round.current_entity
           current_actions = round.actions_for(corporation)
