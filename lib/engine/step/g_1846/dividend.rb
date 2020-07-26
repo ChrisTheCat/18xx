@@ -26,7 +26,7 @@ module Engine
         def skip!
           super
 
-          return unless current_entity.owner == @game.share_pool
+          return unless current_entity.owner.pool?
 
           return if current_entity.trains.any?
 

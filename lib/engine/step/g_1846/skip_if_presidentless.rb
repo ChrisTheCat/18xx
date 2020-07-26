@@ -5,7 +5,7 @@ module Engine
     module G1846
       module SkipIfPresidentless
         def actions(entity)
-          return [] if entity.owner == @game.share_pool
+          return [] if entity.owner.pool?
 
           super(entity)
         end

@@ -59,6 +59,10 @@ module Engine
       false
     end
 
+    def pool?
+      false
+    end
+
     def num_certs
       num_companies = @count_companies ? companies.size : 0
       num_companies + shares.count { |s| s.corporation.counts_for_limit }

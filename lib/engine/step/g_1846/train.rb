@@ -14,7 +14,7 @@ module Engine
         def actions(entity)
           return [] if entity.minor? || entity.company?
 
-          return [] if entity.owner == @game.share_pool
+          return [] if entity.owner.pool?
 
           if entity.corporation? && must_buy_train?(entity)
             actions_ = %w[buy_train]

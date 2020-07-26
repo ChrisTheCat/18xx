@@ -277,7 +277,7 @@ module View
         end
 
         if player_rows.any? || @corporation.num_market_shares.positive?
-          president = @corporation.owner == @game.share_pool
+          president = @corporation.owner.pool?
           at_limit = @game.share_pool.bank_at_limit?(@corporation)
 
           flags = (president ? '*' : '') + (at_limit ? 'L' : '')

@@ -103,6 +103,10 @@ module Engine
       false
     end
 
+    def pool?
+      true
+    end
+
     def fit_in_bank?(bundle)
       (bundle.percent + percent_of(bundle.corporation)) <= 50
     end

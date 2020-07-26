@@ -340,7 +340,7 @@ module Engine
       end
 
       def sellable_bundles(player, corporation)
-        return [] if corporation.owner == @share_pool
+        return [] if corporation.owner.pool?
 
         super(player, corporation)
       end
@@ -350,7 +350,7 @@ module Engine
 
         bundle = bundle.to_bundle
 
-        bundle.owner == @share_pool &&
+        bundle.owner.pool? &&
           bundle.presidents_share &&
           bundle.shares.size == 1 &&
           @share_pool.shares_of(bundle.corporation).size == 1

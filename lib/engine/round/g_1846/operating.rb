@@ -22,7 +22,7 @@ module Engine
         end
 
         def after_process(action)
-          if (entity = @entities[@entity_index]).owner == @game.share_pool
+          if (entity = @entities[@entity_index]).owner.pool?
             case action
             when Engine::Action::Bankrupt
               attempt_to_buy_train_no_president(self, :process_action) unless @game.bankruptcy_limit_reached?
@@ -37,7 +37,7 @@ module Engine
         def attempt_to_buy_train_no_president(obj, method)
           entity = @entities[@entity_index]
 
-          return unless entity.owner == @game.share_pool
+          return unless entity.owner.pool?
 
           return unless entity.trains.empty?
 
