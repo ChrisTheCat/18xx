@@ -655,15 +655,12 @@ module Engine
 
       def declare_bankrupt(player)
         if @bankrupt_players.include?(player)
-          game_error("#{player.name} is already bankrupt, cannot declare bankruptcy again.")
+          msg = "#{player.name} is already bankrupt, cannot declare bankruptcy again."
+          raise GameError.new(msg, current_action_id)
         end
 
         @bankrupt_players << player
         @players.delete(player)
-      end
-
-      def game_error(msg)
-        raise GameError.new(msg, current_action_id)
       end
 
       def tile_lays(_entity)
