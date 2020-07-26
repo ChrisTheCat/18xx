@@ -78,7 +78,7 @@ module Engine
 
       prices = [share_price(r, c)]
 
-      directions.each do |direction|
+      Array(directions).each do |direction|
         case direction
         when :left
           c -= 1 if c.positive?
