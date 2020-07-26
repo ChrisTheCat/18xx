@@ -29,7 +29,10 @@ module Engine
 
             @game.sell_shares_and_change_price(bundle)
 
-            corporation.owner = @game.share_pool if corporation.owner == player
+            if corporation.owner == player
+              @log << "#{corporation.name} enters receivership (it has no president)"
+              corporation.owner = @game.share_pool
+            end
           end
 
           @game.minors
