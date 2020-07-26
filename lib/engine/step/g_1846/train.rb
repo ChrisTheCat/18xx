@@ -16,12 +16,12 @@ module Engine
 
           return [] if entity.receivership?
 
-          if entity.corporation? && must_buy_train?(entity)
+          if entity == current_entity.owner
+            return %w[sell_shares] unless can_issue?(current_entity)
+          elsif must_buy_train?(entity)
             actions_ = %w[buy_train]
             actions_ += %w[buy_shares sell_shares] if can_issue?(entity)
             return actions_
-          elsif entity == current_entity.owner
-            return %w[sell_shares] unless can_issue?(current_entity)
           end
 
           return %w[buy_train pass] if can_buy_train?(entity)
