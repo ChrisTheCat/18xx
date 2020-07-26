@@ -128,6 +128,10 @@ module Engine
       false
     end
 
+    def pool?
+      false
+    end
+
     def inspect
       "<#{self.class.name}: #{id}>"
     end
